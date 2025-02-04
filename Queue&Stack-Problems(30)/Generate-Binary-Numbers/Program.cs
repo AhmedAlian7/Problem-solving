@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Problem_Solving
@@ -19,35 +19,27 @@ namespace Problem_Solving
     public class Program
     {
 
-        public static string toBinary(int input)
+        static void GenerateBinaryNumbers(int n)
         {
-            if (input == 0) return "0";
+            Queue<string> queue = new Queue<string>();
+            queue.Enqueue("1");
 
-            var stack = new Stack<char>();
-            while (input > 0)
-            {
-                stack.Push((input % 2 == 0) ? '0' : '1');
-                input /= 2;
-            }
-            return string.Join("",stack);
-        }
-        public static string[] GenerateBinaryNumbers(int number)
-        {
 
-            var BinaryNumbers = new string[number];
-            for (int i = 1; i <= number; i++)
+            for (int i = 0; i < n; i++)
             {
-                BinaryNumbers[i -1] = toBinary(i);
+                string binary = queue.Dequeue(); // 1
+                Console.WriteLine(binary);
+                queue.Enqueue(binary + "0");
+                queue.Enqueue(binary + "1");
             }
-            return BinaryNumbers;
         }
-       
+
         static void Main(string[] args)
         {
             //var arr = Array.ConvertAll(Console.ReadLine().Split(), int.Parse);
 
             var number = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine(string.Join(", ", GenerateBinaryNumbers(number)));
+            GenerateBinaryNumbers(number);
 
         }
     }
