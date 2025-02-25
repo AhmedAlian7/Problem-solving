@@ -1,71 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
+
+
+
+using System.Net.Security;
+using System.Text;
 
 namespace Problem_Solving
 {
-    /*         
-                            ------------Problem-------------
 
-                Evaluate a Postfix Expression
-                Problem: Evaluate a postfix expression using a stack.
+    /*
+                        ---------------------Problem---------------------
+     
+                Remove Invalid Parentheses
+                Problem: Remove the minimum number of invalid parentheses to make the string valid.
                 
                 Example:
-                - Input: "231*+9-"
-                - Output: -4
-    */
+                - Input: "(()))"
+                - Output: "(())"
+     
+     */
 
-    public class Program
+    public class Progam
     {
-        
-        public static int EvaluatePostfixExpression(string expression)
+        public static string RemoveInvalidParentheses(string s) // "()()("
         {
             var stack = new Stack<int>();
+            var invalidIndices = new HashSet<int>();
+            
 
-            foreach (var item in expression)
+            for (int i =0; i < s.Length; ++i)
             {
-                if (Char.IsNumber(item))
-                {
-                    stack.Push(item - '0');
-                }
-                else if (stack.Count > 1)
-                {
-                    int n1 = stack.Pop();
-                    int n2 = stack.Pop();
-                    switch (item)
-                    {
-                        case '*':
-                            stack.Push(n2 * n1);
-                            break;
-                            
+                char c = s[i];
 
-                        case '+':
-                            stack.Push(n2 + n1);
-                            break;
-                            
-                        case '/': 
-                            stack.Push(n2 / n1);
-                            break;
-                            
-                        case '-':
-                            stack.Push(n2 - n1);
-                            break;
-                            
+                if (c == '(')
+                {
+                    stack.Push(i);
+                }
+                else if (c == ')')
+                {
+                    if (stack.Count > 0)
+                    {
+                        stack.Pop();
+                    }
+                    else
+                    {
+                        invalidIndices.Add(c);
                     }
                 }
             }
-            return stack.Pop();
+            while (stack.Count > 0)
+            {
+                invalidIndices.Add(stack.Pop());
+            }
+
+            var result = new StringBuilder();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (!invalidIndices.Contains(i))
+                {
+                    result.Append(s[i]);
+                }
+            }
+
+            return result.ToString();
         }
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-
             string s = Console.ReadLine().Trim();
-
-            Console.Write(EvaluatePostfixExpression(s));
-            
-
-
-            Console.ReadKey();
+            Console.WriteLine(RemoveInvalidParentheses(s));
         }
     }
 }
+
+
+
+
